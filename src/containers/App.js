@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import classes from './App.css';
 // import Radium, { StyleRoot } from 'radium';
-import Person from './Person/Person';
+import Persons from '../components/Persons/Persons';
+// import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
   state = {
@@ -46,38 +48,24 @@ class App extends Component {
 
     let persons = null;
 
-    let btnClass = '';
-
     if ( this.state.showPersons ) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <Person 
-            click = {() => this.deletePersonHandler(index)}
-            name={person.name} 
-            age={person.age} 
-            key={person.id}
-            changed={(event) => this.nameChangedHandler(event, person.id)} />
-          })}
-        </div>
-      );
-      btnClass = classes.Red;
-    }
-
-    const assignedClasses = [];
-    if (this.state.persons.length <= 2) {
-      assignedClasses.push( classes.red );
-    }
-    if (this.state.persons.length <= 1) {
-      assignedClasses.push( classes.bold );
+      persons =
+          <Persons 
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler}
+          />
     }
 
     return (
       // <StyleRoot>
-        <div className={classes.App}>
-        <p className={assignedClasses.join(' ')}>Suck tiddies, spend fiddies</p>
-        <button className={btnClass}
-        onClick={this.togglePersonsHandler}>Toggle Persons</button>
+      <div className={classes.App}>
+        <Cockpit
+          title={this.props.appTitle}
+          showPersons = {this.state.showPersons}
+          persons = {this.state.persons}
+          clicked = {this.togglePersonsHandler}
+        />
         {persons}
       </div>
       /* </StyleRoot> */
